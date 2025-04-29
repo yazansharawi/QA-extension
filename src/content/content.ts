@@ -1,6 +1,62 @@
 // Content script for button highlighting and flagging
 let isHighlightMode = false;
 
+// Create floating button
+function createFloatingButton() {
+  const button = document.createElement('div');
+  button.className = 'designqa-floating-button';
+  button.innerHTML = `
+    <div class="designqa-button-icon">🚩</div>
+    <div class="designqa-button-text">Flag Buttons</div>
+  `;
+  button.style.cssText = `
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #007bff;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 10000;
+    transition: all 0.3s ease;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  `;
+  
+  button.addEventListener('mouseenter', () => {
+    button.style.transform = 'translateY(-2px)';
+    button.style.boxShadow = '0 6px 16px rgba(0,0,0,0.2)';
+  });
+  
+  button.addEventListener('mouseleave', () => {
+    button.style.transform = 'translateY(0)';
+    button.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+  });
+  
+  button.addEventListener('click', () => {
+    toggleHighlightMode();
+    updateButtonState(button);
+  });
+  
+  document.body.appendChild(button);
+  return button;
+}
+
+// Update button state
+function updateButtonState(button: HTMLElement) {
+  if (isHighlightMode) {
+    button.style.background = '#dc3545';
+    button.querySelector('.designqa-button-text')!.textContent = 'Stop Flagging';
+  } else {
+    button.style.background = '#007bff';
+    button.querySelector('.designqa-button-text')!.textContent = 'Flag Buttons';
+  }
+}
+
 // Function to toggle highlight mode
 function toggleHighlightMode() {
   isHighlightMode = !isHighlightMode;
@@ -157,9 +213,8 @@ function showReportForm(button: HTMLElement) {
     const report = {
       url: window.location.href,
       buttonText: button.textContent?.trim() || 'N/A',
-      note: textarea?.value || '',
-      timestamp: new Date().toISOString()
-    };
+      note: textarea?.value || ''
+  };
     
     // Send report to background script
     chrome.runtime.sendMessage({ type: 'SUBMIT_REPORT', report });
@@ -217,6 +272,23 @@ document.addEventListener('DOMContentLoaded', () => {
       border-color: #007bff;
       box-shadow: 0 0 0 2px rgba(0,123,255,0.2);
     }
+    
+    .designqa-floating-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    }
+    
+    .designqa-button-icon {
+      font-size: 18px;
+    }
+    
+    .designqa-button-text {
+      font-size: 14px;
+      font-weight: 500;
+    }
   `;
   document.head.appendChild(style);
+  
+  // Create floating button
+  const floatingButton = createFloatingButton();
 });

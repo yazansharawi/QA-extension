@@ -34,12 +34,7 @@ module.exports = {
     extensions: ['.ts', '.js'],
   },
   plugins: [
-    new Dotenv({
-      path: './.env',
-      systemvars: true,
-      safe: false,
-      defaults: false,
-    }),
+    new Dotenv(),
     new CopyPlugin({
       patterns: [
         { from: 'manifest.json', to: 'manifest.json' },
