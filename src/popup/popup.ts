@@ -133,12 +133,6 @@ style.textContent = `
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   }
   
-  .popup-container {
-    background: white;
-  border-radius: 12px;
-    box-shadow: none;
-  }
-  
   .report-item {
     padding: 12px;
     border: 1px solid #eee;
@@ -253,5 +247,19 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Load reports when popup opens
-document.addEventListener('DOMContentLoaded', loadReports);
+// Add event listener for Start Highlighting button
+document.addEventListener('DOMContentLoaded', () => {
+  const startHighlightingBtn = document.getElementById('startHighlighting');
+  if (startHighlightingBtn) {
+    startHighlightingBtn.addEventListener('click', () => {
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        const activeTab = tabs[0];
+        if (activeTab.id) {
+          chrome.tabs.sendMessage(activeTab.id, { type: 'TOGGLE_HIGHLIGHT' });
+        }
+      });
+    });
+  }
+  
+  loadReports();
+});
