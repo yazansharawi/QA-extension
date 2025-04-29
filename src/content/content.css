@@ -1,0 +1,68 @@
+/* Styles for button highlighting */
+.flag-button {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  background: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: none;
+  cursor: pointer;
+  text-align: center;
+  line-height: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  z-index: 10000;
+}
+
+.flag-button:hover {
+  transform: scale(1.1);
+}
+
+/* Report form styles */
+.report-form {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 10000;
+  min-width: 300px;
+}
+
+.report-form h3 {
+  margin: 0 0 16px;
+  color: #1a1a1a;
+}
+
+.report-form textarea {
+  width: 100%;
+  margin: 10px 0;
+  padding: 8px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  resize: vertical;
+  min-height: 80px;
+}
+
+.report-form button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.report-form .cancel-btn {
+  background: #f0f0f0;
+  border: 1px solid #e0e0e0;
+  color: #666;
+}
+
+.report-form .submit-btn {
+  background: #007bff;
+  border: none;
+  color: white;
+} 

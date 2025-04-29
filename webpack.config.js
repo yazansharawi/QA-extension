@@ -37,8 +37,9 @@ module.exports = {
     new Dotenv(),
     new CopyPlugin({
       patterns: [
-        { from: 'public/manifest.json', to: 'manifest.json' },
+        { from: 'manifest.json', to: 'manifest.json' },
         { from: 'public/icons', to: 'icons' },
+        { from: 'src/content/content.css', to: 'content.css' }
       ],
     }),
     new HtmlWebpackPlugin({
