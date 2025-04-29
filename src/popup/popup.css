@@ -47,11 +47,15 @@ body .spinner {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-/* Add card style for each report */
 body .report-card {
   border: 1px solid #e0e0e0;
   border-radius: 12px;
@@ -61,7 +65,6 @@ body .report-card {
   box-shadow: none !important;
 }
 
-/* Style the flag and category row */
 body .flag-category-row {
   display: flex;
   align-items: center;
@@ -103,7 +106,7 @@ body kbd {
   padding: 2px 6px;
   font-family: monospace;
   font-size: 12px;
-  box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 }
 
 body .start-highlighting-btn {
@@ -128,4 +131,4 @@ body .start-highlighting-btn:hover {
 body .start-highlighting-btn:active {
   transform: translateY(0);
   box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
-} 
+}
