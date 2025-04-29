@@ -1,6 +1,9 @@
 // Content script for button highlighting and flagging
 let isHighlightMode = false;
 
+// Store references to event handlers for cleanup
+const highlightClickHandlers = new WeakMap<HTMLElement, EventListener>();
+
 // Create floating button
 function createFloatingButton() {
   const button = document.createElement('div');
@@ -99,17 +102,24 @@ function enableHighlightMode() {
     
     htmlButton.appendChild(flagButton);
     
-    // Show flag on hover
     htmlButton.addEventListener('mouseenter', () => {
       flagButton.style.display = 'block';
-      flagButton.style.transform = 'scale(1)';
-      flagButton.style.opacity = '1';
+      flagButton.style.transform = 'scale(0.8)';
+      flagButton.style.opacity = '0.5';
+      flagButton.style.pointerEvents = 'none'; 
       htmlButton.style.outline = '2px solid #ff4444';
+      
+      setTimeout(() => {
+        flagButton.style.transform = 'scale(1)';
+        flagButton.style.opacity = '1';
+        flagButton.style.pointerEvents = 'auto'; 
+      }, 300); 
     });
     
     htmlButton.addEventListener('mouseleave', () => {
       flagButton.style.transform = 'scale(0.8)';
       flagButton.style.opacity = '0';
+      flagButton.style.pointerEvents = 'none';
       setTimeout(() => {
         if (!htmlButton.matches(':hover')) {
           flagButton.style.display = 'none';
@@ -118,15 +128,23 @@ function enableHighlightMode() {
       htmlButton.style.outline = '2px solid #007bff';
     });
     
-    // Handle flag click
     flagButton.addEventListener('click', (e) => {
       e.stopPropagation();
       showReportForm(htmlButton);
     });
+
+    const preventClick: EventListener = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (!(e.target instanceof HTMLElement && e.target.classList.contains('flag-button'))) {
+        showReportForm(htmlButton);
+      }
+    };
+    htmlButton.addEventListener('click', preventClick, true);
+    highlightClickHandlers.set(htmlButton, preventClick);
   });
 }
 
-// Function to disable highlight mode
 function disableHighlightMode() {
   const buttons = document.querySelectorAll('button, a');
   buttons.forEach(button => {
@@ -136,10 +154,14 @@ function disableHighlightMode() {
     if (flagButton) {
       flagButton.remove();
     }
+    const handler = highlightClickHandlers.get(htmlButton);
+    if (handler) {
+      htmlButton.removeEventListener('click', handler, true);
+      highlightClickHandlers.delete(htmlButton);
+    }
   });
 }
 
-// Function to show report form
 function showReportForm(button: HTMLElement) {
   const form = document.createElement('div');
   form.className = 'report-form';
