@@ -1,4 +1,3 @@
-/* Styles for button highlighting */
 .flag-button {
   position: absolute;
   top: -20px;
@@ -19,7 +18,6 @@
   transform: scale(1.1);
 }
 
-/* Report form styles */
 .report-form {
   position: fixed;
   top: 50%;

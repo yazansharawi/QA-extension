@@ -1,4 +1,3 @@
-// Report interface
 export interface Report {
   id?: number;
   url: string;
@@ -7,7 +6,6 @@ export interface Report {
   timestamp: string;
 }
 
-// Message types
 export interface ToggleHighlightMessage {
   type: 'TOGGLE_HIGHLIGHT';
 }

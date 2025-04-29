@@ -1,10 +1,7 @@
-// Content script for button highlighting and flagging
 let isHighlightMode = false;
 
-// Store references to event handlers for cleanup
 const highlightClickHandlers = new WeakMap<HTMLElement, EventListener>();
 
-// Create floating button
 function createFloatingButton() {
   const button = document.createElement('div');
   button.className = 'designqa-floating-button';
@@ -49,7 +46,6 @@ function createFloatingButton() {
   return button;
 }
 
-// Update button state
 function updateButtonState(button: HTMLElement) {
   if (isHighlightMode) {
     button.style.background = '#dc3545';
@@ -60,7 +56,6 @@ function updateButtonState(button: HTMLElement) {
   }
 }
 
-// Function to toggle highlight mode
 function toggleHighlightMode() {
   isHighlightMode = !isHighlightMode;
   if (isHighlightMode) {
@@ -70,7 +65,7 @@ function toggleHighlightMode() {
   }
 }
 
-// Function to enable highlight mode
+
 function enableHighlightMode() {
   const buttons = document.querySelectorAll('button, a');
   buttons.forEach(button => {
@@ -79,7 +74,6 @@ function enableHighlightMode() {
     htmlButton.style.position = 'relative';
     htmlButton.style.transition = 'outline 0.3s ease';
     
-    // Create flag button
     const flagButton = document.createElement('div');
     flagButton.className = 'flag-button';
     flagButton.innerHTML = '🚩';
@@ -221,13 +215,11 @@ function showReportForm(button: HTMLElement) {
   
   document.body.appendChild(form);
   
-  // Animate form in
   requestAnimationFrame(() => {
     form.style.transform = 'translate(-50%, -50%) scale(1)';
     form.style.opacity = '1';
   });
   
-  // Handle form submission
   const submitBtn = form.querySelector('.submit-btn');
   const cancelBtn = form.querySelector('.cancel-btn');
   const textarea = form.querySelector('textarea');
@@ -239,23 +231,19 @@ function showReportForm(button: HTMLElement) {
       note: textarea?.value || ''
   };
     
-    // Send report to background script
     chrome.runtime.sendMessage({ type: 'SUBMIT_REPORT', report });
     
-    // Animate form out
     form.style.transform = 'translate(-50%, -50%) scale(0.9)';
     form.style.opacity = '0';
     setTimeout(() => form.remove(), 300);
   });
   
   cancelBtn?.addEventListener('click', () => {
-    // Animate form out
     form.style.transform = 'translate(-50%, -50%) scale(0.9)';
     form.style.opacity = '0';
     setTimeout(() => form.remove(), 300);
   });
   
-  // Add hover effects
   submitBtn?.addEventListener('mouseenter', () => {
     (submitBtn as HTMLElement).style.background = '#0056b3';
   });
@@ -273,16 +261,13 @@ function showReportForm(button: HTMLElement) {
   });
 }
 
-// Listen for messages from background script
 chrome.runtime.onMessage.addListener((message) => {
   if (message.type === 'TOGGLE_HIGHLIGHT') {
     toggleHighlightMode();
   }
 });
 
-// Initial setup
 document.addEventListener('DOMContentLoaded', () => {
-  // Add styles for highlight mode
   const style = document.createElement('style');
   style.textContent = `
     .flag-button:hover {
@@ -312,6 +297,5 @@ document.addEventListener('DOMContentLoaded', () => {
   `;
   document.head.appendChild(style);
   
-  // Create floating button
   const floatingButton = createFloatingButton();
 });

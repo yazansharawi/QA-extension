@@ -1,6 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Initialize Supabase client
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
 
@@ -11,7 +10,6 @@ if (!supabaseUrl || !supabaseKey) {
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-// Interface for report data
 interface Report {
   id: number;
   url: string;
@@ -20,19 +18,16 @@ interface Report {
   created_at: string;
 }
 
-// Function to format timestamp
 function formatDate(timestamp: string): string {
   const date = new Date(timestamp);
   return date.toLocaleString();
 }
 
-// Function to truncate text
 function truncateText(text: string, maxLength: number): string {
   if (text.length <= maxLength) return text;
   return text.slice(0, maxLength) + '...';
 }
 
-// Function to create report element
 function createReportElement(report: Report): HTMLElement {
   const div = document.createElement('div');
   div.className = 'report-item';
@@ -49,7 +44,6 @@ function createReportElement(report: Report): HTMLElement {
   return div;
 }
 
-// Function to show loading state
 function showLoading() {
   const reportsList = document.getElementById('reports-list');
   if (!reportsList) return;
@@ -62,7 +56,6 @@ function showLoading() {
   `;
 }
 
-// Function to show error state
 function showError(message: string) {
   const reportsList = document.getElementById('reports-list');
   if (!reportsList) return;
@@ -75,14 +68,12 @@ function showError(message: string) {
     </div>
   `;
   
-  // Add retry functionality
   const retryButton = reportsList.querySelector('.retry-button');
   retryButton?.addEventListener('click', (e: Event) => {
     loadReports(1);
   });
 }
 
-// Function to show empty state
 function showEmptyState() {
   const reportsList = document.getElementById('reports-list');
   if (!reportsList) return;
@@ -96,7 +87,6 @@ function showEmptyState() {
   `;
 }
 
-// Function to load and display reports
 async function loadReports(page: number = 1) {
   const reportsList = document.getElementById('reports-list');
   const prevPageBtn = document.getElementById('prevPage') as HTMLButtonElement;
@@ -127,8 +117,7 @@ async function loadReports(page: number = 1) {
     } else {
       showEmptyState();
     }
-    
-    // Always update pagination controls, regardless of whether there are reports or not
+  
     currentPageSpan.textContent = page.toString();
     prevPageBtn.disabled = page === 1;
     nextPageBtn.disabled = !count || start + pageSize >= count;
@@ -138,7 +127,6 @@ async function loadReports(page: number = 1) {
   }
 }
 
-// Add styles
 const style = document.createElement('style');
 style.textContent = `
   body {
@@ -261,7 +249,6 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Add event listeners for pagination
 document.addEventListener('DOMContentLoaded', () => {
   const startHighlightingBtn = document.getElementById('startHighlighting');
   const prevPageBtn = document.getElementById('prevPage') as HTMLButtonElement;
