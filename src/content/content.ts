@@ -187,11 +187,12 @@ function showReportForm(button: HTMLElement) {
       placeholder="Add a note..." 
       style="
         width: 100%;
+        box-sizing: border-box;
         margin: 10px 0;
         padding: 12px;
         border: 1px solid #ddd;
         border-radius: 6px;
-        resize: vertical;
+        resize: none;
         min-height: 80px;
         font-family: inherit;
         font-size: 14px;
