@@ -17,7 +17,7 @@ interface Report {
   url: string;
   buttonText: string;
   note: string;
-  timestamp: string;
+  created_at: string;
 }
 
 // Function to format timestamp
@@ -40,7 +40,7 @@ function createReportElement(report: Report): HTMLElement {
   div.innerHTML = `
     <div class="report-header">
       <div class="report-button">${truncateText(report.buttonText, 30)}</div>
-      <div class="report-time">${formatDate(report.timestamp)}</div>
+      <div class="report-time">${formatDate(report.created_at)}</div>
     </div>
     <div class="report-url" title="${report.url}">${truncateText(report.url, 50)}</div>
     ${report.note ? `<div class="report-note">${truncateText(report.note, 100)}</div>` : ''}
@@ -131,6 +131,12 @@ style.textContent = `
     width: 400px;
     padding: 16px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  }
+  
+  .popup-container {
+    background: white;
+  border-radius: 12px;
+    box-shadow: none;
   }
   
   .report-item {

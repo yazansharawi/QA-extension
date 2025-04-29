@@ -1,0 +1,80 @@
+.popup-container {
+  width: 400px;
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: none !important;
+  border: 1px solid #eee;
+}
+
+.popup-header {
+  margin-bottom: 16px;
+}
+
+.popup-header h1 {
+  margin: 0;
+  font-size: 18px;
+  color: #1a1a1a;
+}
+
+.popup-content {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.reports-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 20px;
+  color: #666;
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Add card style for each report */
+.report-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 16px;
+  background: #fff;
+  margin-bottom: 12px;
+  box-shadow: none !important;
+}
+
+/* Style the flag and category row */
+.flag-category-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.flag-icon {
+  font-size: 16px;
+  color: #b71c1c;
+}
+
+.category-label {
+  font-weight: bold;
+  color: #222;
+} 
