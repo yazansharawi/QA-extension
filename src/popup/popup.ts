@@ -1,32 +1,6 @@
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_KEY;
-
-if (!supabaseUrl || !supabaseKey) {
-  console.error('Missing Supabase credentials. Please check your environment variables.');
-  throw new Error('Missing Supabase credentials');
-}
-
-const supabase = createClient(supabaseUrl, supabaseKey);
-
-interface Report {
-  id: number;
-  url: string;
-  buttonText: string;
-  note: string;
-  created_at: string;
-}
-
-function formatDate(timestamp: string): string {
-  const date = new Date(timestamp);
-  return date.toLocaleString();
-}
-
-function truncateText(text: string, maxLength: number): string {
-  if (text.length <= maxLength) return text;
-  return text.slice(0, maxLength) + '...';
-}
+import { supabase } from '../lib/supabase';
+import { Report } from '../lib/types';
+import { formatDate, truncateText, appendStyles } from '../lib/utils';
 
 function createReportElement(report: Report): HTMLElement {
   const div = document.createElement('div');
@@ -35,7 +9,7 @@ function createReportElement(report: Report): HTMLElement {
   div.innerHTML = `
     <div class="report-header">
       <div class="report-button">${truncateText(report.buttonText, 30)}</div>
-      <div class="report-time">${formatDate(report.created_at)}</div>
+      <div class="report-time">${formatDate(report.created_at || '')}</div>
     </div>
     <div class="report-url" title="${report.url}">${truncateText(report.url, 50)}</div>
     ${report.note ? `<div class="report-note">${truncateText(report.note, 100)}</div>` : ''}
@@ -127,8 +101,7 @@ async function loadReports(page: number = 1) {
   }
 }
 
-const style = document.createElement('style');
-style.textContent = `
+const popupStyles = `
   body {
     width: 400px;
     padding: 16px;
@@ -247,7 +220,8 @@ style.textContent = `
     margin-top: 4px;
   }
 `;
-document.head.appendChild(style);
+
+appendStyles(popupStyles);
 
 document.addEventListener('DOMContentLoaded', () => {
   const startHighlightingBtn = document.getElementById('startHighlighting');

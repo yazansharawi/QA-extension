@@ -1,3 +1,13 @@
+import { 
+  floatingButtonStyles,
+  flagButtonStyles,
+  reportFormStyles,
+  formTextareaStyles,
+  cancelButtonStyles,
+  submitButtonStyles
+} from './styles';
+import { Report } from '../lib/types';
+
 let isHighlightMode = false;
 
 const highlightClickHandlers = new WeakMap<HTMLElement, EventListener>();
@@ -9,23 +19,7 @@ function createFloatingButton() {
     <div class="designqa-button-icon">🚩</div>
     <div class="designqa-button-text">Flag Buttons</div>
   `;
-  button.style.cssText = `
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #007bff;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 50px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    z-index: 10000;
-    transition: all 0.3s ease;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  `;
+  button.style.cssText = floatingButtonStyles;
   
   button.addEventListener('mouseenter', () => {
     button.style.transform = 'translateY(-2px)';
@@ -77,22 +71,7 @@ function enableHighlightMode() {
     const flagButton = document.createElement('div');
     flagButton.className = 'flag-button';
     flagButton.innerHTML = '🚩';
-    flagButton.style.cssText = `
-      position: absolute;
-      top: -20px;
-      right: -20px;
-      background: white;
-      border-radius: 50%;
-      width: 24px;
-      height: 24px;
-      display: none;
-      cursor: pointer;
-      text-align: center;
-      line-height: 24px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-      transition: all 0.3s ease;
-      z-index: 1000;
-    `;
+    flagButton.style.cssText = flagButtonStyles;
     
     htmlButton.appendChild(flagButton);
     
@@ -159,57 +138,18 @@ function disableHighlightMode() {
 function showReportForm(button: HTMLElement) {
   const form = document.createElement('div');
   form.className = 'report-form';
-  form.style.cssText = `
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.9);
-    background: white;
-    padding: 24px;
-    border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-    z-index: 10000;
-    width: 320px;
-    opacity: 0;
-    transition: all 0.3s ease;
-  `;
+  form.style.cssText = reportFormStyles;
   
   form.innerHTML = `
     <h3 style="margin: 0 0 16px; color: #333; font-size: 18px;">Report Broken Button</h3>
     <p style="margin: 0 0 12px; color: #666; font-size: 14px;">Button Text: ${button.textContent?.trim() || 'N/A'}</p>
     <textarea 
       placeholder="Add a note..." 
-      style="
-        width: 100%;
-        box-sizing: border-box;
-        margin: 10px 0;
-        padding: 12px;
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        resize: none;
-        min-height: 80px;
-        font-family: inherit;
-        font-size: 14px;
-      "
+      style="${formTextareaStyles}"
     ></textarea>
     <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 16px;">
-      <button class="cancel-btn" style="
-        padding: 8px 16px;
-        background: #f5f5f5;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: background 0.2s ease;
-      ">Cancel</button>
-      <button class="submit-btn" style="
-        padding: 8px 16px;
-        background: #007bff;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: background 0.2s ease;
-      ">Submit</button>
+      <button class="cancel-btn" style="${cancelButtonStyles}">Cancel</button>
+      <button class="submit-btn" style="${submitButtonStyles}">Submit</button>
     </div>
   `;
   
@@ -225,11 +165,11 @@ function showReportForm(button: HTMLElement) {
   const textarea = form.querySelector('textarea');
   
   submitBtn?.addEventListener('click', () => {
-    const report = {
+    const report: Report = {
       url: window.location.href,
       buttonText: button.textContent?.trim() || 'N/A',
       note: textarea?.value || ''
-  };
+    };
     
     chrome.runtime.sendMessage({ type: 'SUBMIT_REPORT', report });
     

@@ -3,7 +3,7 @@ export interface Report {
   url: string;
   buttonText: string;
   note: string;
-  timestamp: string;
+  created_at?: string;
 }
 
 export interface ToggleHighlightMessage {
@@ -15,4 +15,9 @@ export interface SubmitReportMessage {
   report: Report;
 }
 
-export type Message = ToggleHighlightMessage | SubmitReportMessage;
+export interface ShowNotificationMessage {
+  type: 'SHOW_NOTIFICATION';
+  message: string;
+}
+
+export type Message = ToggleHighlightMessage | SubmitReportMessage | ShowNotificationMessage;
