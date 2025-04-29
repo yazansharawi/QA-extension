@@ -155,6 +155,40 @@
       transform: translateY(0);
       box-shadow: none;
     }
+
+    .pagination-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin-top: 16px;
+      padding: 8px;
+    }
+
+    .pagination-btn {
+      background: #f8f9fa;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-size: 14px;
+      color: #333;
+      transition: all 0.2s ease;
+    }
+
+    .pagination-btn:hover {
+      background: #e9ecef;
+    }
+
+    .pagination-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .page-info {
+      font-size: 14px;
+      color: #666;
+    }
   </style>
 </head>
 
@@ -164,7 +198,7 @@
       <h1>Recent Bug Reports</h1>
     </header>
     <div class="shortcut-info">
-      <p>Press <kbd>Alt + B</kbd> to toggle highlight mode</p>
+      <p>Press <kbd>Alt + B</kbd> to toggle highlight mode or press</p>
       <button id="startHighlighting" class="start-highlighting-btn">Start Highlighting</button>
     </div>
     <main class="popup-content">
@@ -173,6 +207,11 @@
           <div class="spinner"></div>
           <div>Loading reports...</div>
         </div>
+      </div>
+      <div class="pagination-controls">
+        <button id="prevPage" class="pagination-btn">Previous</button>
+        <span class="page-info">Page <span id="currentPage">1</span></span>
+        <button id="nextPage" class="pagination-btn">Next</button>
       </div>
     </main>
   </div>

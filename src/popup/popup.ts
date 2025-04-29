@@ -77,7 +77,9 @@ function showError(message: string) {
   
   // Add retry functionality
   const retryButton = reportsList.querySelector('.retry-button');
-  retryButton?.addEventListener('click', loadReports);
+  retryButton?.addEventListener('click', (e: Event) => {
+    loadReports(1);
+  });
 }
 
 // Function to show empty state
@@ -95,18 +97,25 @@ function showEmptyState() {
 }
 
 // Function to load and display reports
-async function loadReports() {
+async function loadReports(page: number = 1) {
   const reportsList = document.getElementById('reports-list');
-  if (!reportsList) return;
+  const prevPageBtn = document.getElementById('prevPage') as HTMLButtonElement;
+  const nextPageBtn = document.getElementById('nextPage') as HTMLButtonElement;
+  const currentPageSpan = document.getElementById('currentPage');
+  
+  if (!reportsList || !prevPageBtn || !nextPageBtn || !currentPageSpan) return;
   
   showLoading();
   
   try {
-    const { data: reports, error } = await supabase
+    const pageSize = 5;
+    const start = (page - 1) * pageSize;
+    
+    const { data: reports, error, count } = await supabase
       .from('reports')
-      .select('*')
+      .select('*', { count: 'exact' })
       .order('created_at', { ascending: false })
-      .limit(5);
+      .range(start, start + pageSize - 1);
     
     if (error) throw error;
     
@@ -118,6 +127,11 @@ async function loadReports() {
     } else {
       showEmptyState();
     }
+    
+    // Always update pagination controls, regardless of whether there are reports or not
+    currentPageSpan.textContent = page.toString();
+    prevPageBtn.disabled = page === 1;
+    nextPageBtn.disabled = !count || start + pageSize >= count;
   } catch (error) {
     console.error('Error loading reports:', error);
     showError('Failed to load reports. Please try again.');
@@ -247,9 +261,12 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Add event listener for Start Highlighting button
+// Add event listeners for pagination
 document.addEventListener('DOMContentLoaded', () => {
   const startHighlightingBtn = document.getElementById('startHighlighting');
+  const prevPageBtn = document.getElementById('prevPage') as HTMLButtonElement;
+  const nextPageBtn = document.getElementById('nextPage') as HTMLButtonElement;
+  
   if (startHighlightingBtn) {
     startHighlightingBtn.addEventListener('click', () => {
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -258,6 +275,22 @@ document.addEventListener('DOMContentLoaded', () => {
           chrome.tabs.sendMessage(activeTab.id, { type: 'TOGGLE_HIGHLIGHT' });
         }
       });
+    });
+  }
+  
+  if (prevPageBtn && nextPageBtn) {
+    let currentPage = 1;
+    
+    prevPageBtn.addEventListener('click', (e: Event) => {
+      if (currentPage > 1) {
+        currentPage--;
+        loadReports(currentPage);
+      }
+    });
+    
+    nextPageBtn.addEventListener('click', (e: Event) => {
+      currentPage++;
+      loadReports(currentPage);
     });
   }
   
