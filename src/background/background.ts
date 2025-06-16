@@ -1,5 +1,4 @@
 import { supabase } from '../lib/supabase';
-import { Report } from '../lib/types';
 
 chrome.commands.onCommand.addListener((command) => {
   if (command === 'toggle-highlight-mode') {
