@@ -1,4 +1,4 @@
-# QA Extension - DesignQA Bug Reporter
+# QA Extension - Bug Reporter
 
 A powerful Chrome extension designed for QA engineers, designers, and developers to efficiently identify, flag, and track broken buttons and UI elements across web applications. Built with TypeScript and integrated with Supabase for seamless bug report management.
 

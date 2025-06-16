@@ -1,5 +1,5 @@
 {
-    "name": "designqa-assignment",
+    "name": "qa-extension",
     "version": "1.0.0",
     "description": "Chrome extension for flagging broken buttons and storing reports in Supabase",
     "main": "index.js",

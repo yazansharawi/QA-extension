@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "DesignQA Bug Reporter",
+    "name": "QA Bug Reporter",
     "version": "1.0.0",
     "description": "Flag broken buttons on webpages and store reports in Supabase",
     "permissions": ["activeTab", "storage"],
@@ -37,7 +37,7 @@
     },
     "browser_specific_settings": {
       "gecko": {
-        "id": "designqa@example.com"
+        "id": "qa-extension@example.com"
       },
       "edge": {
         "browser_action_next_to_address_bar": true

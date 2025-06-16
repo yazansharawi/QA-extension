@@ -14,10 +14,10 @@ const highlightClickHandlers = new WeakMap<HTMLElement, EventListener>();
 
 function createFloatingButton() {
   const button = document.createElement('div');
-  button.className = 'designqa-floating-button';
+  button.className = 'qa-floating-button';
   button.innerHTML = `
-    <div class="designqa-button-icon">🚩</div>
-    <div class="designqa-button-text">Flag Buttons</div>
+    <div class="qa-button-icon">🚩</div>
+    <div class="qa-button-text">Flag Buttons</div>
   `;
   button.style.cssText = floatingButtonStyles;
   
@@ -43,10 +43,10 @@ function createFloatingButton() {
 function updateButtonState(button: HTMLElement) {
   if (isHighlightMode) {
     button.style.background = '#dc3545';
-    button.querySelector('.designqa-button-text')!.textContent = 'Stop Flagging';
+    button.querySelector('.qa-button-text')!.textContent = 'Stop Flagging';
   } else {
     button.style.background = '#007bff';
-    button.querySelector('.designqa-button-text')!.textContent = 'Flag Buttons';
+    button.querySelector('.qa-button-text')!.textContent = 'Flag Buttons';
   }
 }
 
@@ -221,16 +221,16 @@ document.addEventListener('DOMContentLoaded', () => {
       box-shadow: 0 0 0 2px rgba(0,123,255,0.2);
     }
     
-    .designqa-floating-button:hover {
+    .qa-floating-button:hover {
       transform: translateY(-2px);
       box-shadow: 0 6px 16px rgba(0,0,0,0.2);
     }
     
-    .designqa-button-icon {
+    .qa-button-icon {
       font-size: 18px;
     }
     
-    .designqa-button-text {
+    .qa-button-text {
       font-size: 14px;
       font-weight: 500;
     }
